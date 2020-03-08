@@ -1,14 +1,8 @@
 <template>
 	<view class="container">
 		<!-- 搜索栏 -->
-		<view class="search">
-			<!-- 搜索栏标签 -->
-			<view class="input-box">
-				<input type="text" name="" id="">
-			</view>
-			<!-- 搜索的结果 -->
-			<view class="content"></view>
-		</view>
+			<!-- 使用组件 -->
+		<search />
 
 		<!-- 轮播图 -->
 		<swiper indicator-dots>
@@ -121,11 +115,17 @@
 </template>
 
 <script>
+// 导入组件
+import search from "@/components/search"
 	export default {
 		data() {
 			return {
 				title: 'Hello'
 			}
+		},
+		// 注册组件
+		components:{
+			search
 		},
 		onLoad() {
 
@@ -137,15 +137,7 @@
 </script>
 
 <style lang="less">
-	.search {
-		.input-box {
-			background-color: #FF2D4A;
-			padding: 20rpx 16rpx;
-			input {
-				background-color: #fff;
-			}
-		}
-	}
+	
 	swiper {
 		height: 340rpx;
 		image {
