@@ -172,6 +172,7 @@
 			height: 60rpx;
 			padding: 20rpx 0 0 10rpx;
 			background-color: #F4F4F4;
+			box-sizing: border-box;
 		}
 		.items {
 			padding: 20rpx 16rpx;
@@ -198,6 +199,18 @@
 				// 五个图片中,倒数第一个和倒数第二个
 				&:nth-last-child(-n+2){
 					padding-top: 10rpx;
+				}
+			}
+		}
+		&:first-child {
+			.items {
+				navigator {
+				width: 232rpx;
+				height: 188rpx;
+				&:first-child {
+					width: 232rpx;
+					height: 386rpx;
+					}
 				}
 			}
 		}
