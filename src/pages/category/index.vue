@@ -6,8 +6,8 @@
     <view class="category">
       <!-- 顶级分类 -->
       <view class="sup">
-        <scroll-view scroll-y>
-          <text v-for="item in categories" :key="item.cat_id" :class="{active: currentId===item.cat_id}">{{item.cat_name}}</text>
+        <scroll-view scroll-y @click="handleChange">
+          <text v-for="item in categories" :key="item.cat_id" :class="{active: currentId===item.cat_id}" :data-id="item.cat_id">{{item.cat_name}}</text>
         </scroll-view>
       </view>
       <!-- 子级分类 -->
@@ -160,6 +160,11 @@
           path: 'categories'
         })
         this.categories = message
+      },
+      // 实现左侧样式切换
+      handleChange(e){
+        // 控制一级分类的切换 
+        this.currentId = e.target.dataset.id
       }
     }
   }
