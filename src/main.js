@@ -8,7 +8,10 @@ import App from './App'
 
 // //vue插件用法二
 import MyPlugin from '@/utils/request.js'
-Vue.use(MyPlugin)
+Vue.use(MyPlugin, {
+  // 后台接口的基准路径
+  baseURL: 'https://api-ugo-dev.itheima.net/api/public/v1/'
+})
 
 Vue.config.productionTip = false
 

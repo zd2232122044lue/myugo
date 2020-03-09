@@ -67,36 +67,51 @@ import search from "@/components/search"
 				this.pageHeight = data.height+'px'
 			},
 			// 获取轮播图数据
-			querySwiperData(){
+			async querySwiperData(){
+				const {message} = await this.$request({
+					path: 'home/swiperdata'
+				})
+				this.swiperData = message
+
 				// // 使用插件方法一
 				// this.request()
-				// 使用插件方法二
-				this.$request()
+				// // 使用插件方法二
+				//this.$request()
 
-				wx.request({
-					url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/swiperdata',
-					success: (res) => {
-						this.swiperData = res.data.message
-					}
-				})
+				// wx.request({
+				// 	url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/swiperdata',
+				// 	success: (res) => {
+				// 		this.swiperData = res.data.message
+				// 	}
+				// })
 			},
 			// 获取导航菜单数据
-			queryNavsData(){
-				wx.request({
-					url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/catitems',
-					success: (res) => {
-						this.navsData = res.data.message
-					}
+			async queryNavsData(){
+				const {message} = await this.$request({
+					path: 'home/catitems'
 				})
+				this.navsData = message
+
+				// wx.request({
+				// 	url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/catitems',
+				// 	success: (res) => {
+				// 		this.navsData = res.data.message
+				// 	}
+				// })
 			},
 			// 获取楼层商品数据
-			queryFloorsData(){
-				wx.request({
-					url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/floordata',
-					success: (res) => {
-						this.floorsData = res.data.message
-					}
+			async queryFloorsData(){
+				const {message} = await this.$request({
+					path: 'home/floordata'
 				})
+				this.floorsData = message
+
+				// wx.request({
+				// 	url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/floordata',
+				// 	success: (res) => {
+				// 		this.floorsData = res.data.message
+				// 	}
+				// })
 			},
 		}
 	}

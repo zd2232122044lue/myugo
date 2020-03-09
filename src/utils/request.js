@@ -1,3 +1,5 @@
+// 封装一个通用的接口调用模块
+
 // // vue插件用法一
 // export default () => {
 //     return (Vue) => {
@@ -11,8 +13,14 @@
 // vue插件用法二(官方规范)
 export default {
     install: (Vue, options) => {
-        Vue.prototype.$request = () => {
-            console.log("vue实例方法")
+        Vue.prototype.$request = async ({path}) => {
+          // 实现发送请求
+          // uni-app对部分小程序原生API进行了封装,可以支持Promise
+            const [error, res] = await uni.request({
+              url: options.baseURL+path
+            })  
+            // 返回异步接口的结果
+            return res.data
         }
     }
 }
