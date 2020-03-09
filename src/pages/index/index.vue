@@ -1,8 +1,8 @@
 <template>
-	<view class="container">
+	<view class="container" :style="{height: pageHeight,overflow: 'hidden'}">
 		<!-- 搜索栏 -->
 			<!-- 使用组件 -->
-		<search />
+		<search @window-height="handleWindowHeight"/>
 
 		<!-- 轮播图 -->
 		<swiper indicator-dots>
@@ -110,7 +110,7 @@
 					</navigator>
 				</view>
 			</view>
-		<view>
+		</view>
 	</view>
 </template>
 
@@ -120,7 +120,8 @@ import search from "@/components/search"
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				title: 'Hello',
+				pageHeight: 'auto'
 			}
 		},
 		// 注册组件
@@ -131,7 +132,9 @@ import search from "@/components/search"
 
 		},
 		methods: {
-
+			handleWindowHeight(data){
+				this.pageHeight = data.height+'px'
+			}
 		}
 	}
 </script>

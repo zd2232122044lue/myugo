@@ -20,12 +20,17 @@ export default {
   },
   methods:{
       goSearch(){
+          const {windowHeight}=uni.getSystemInfoSync()
+          // 将可视区高度传递到父组件
+          this.$emit('window-height',{height:windowHeight})
+
           // 当输入框获取焦点时,在父元素上添加一个类名
           this.isFocused = true
           this.placeholder = "请输入"
       },
       handleCancel(){
           // 点击取消按钮,搜索栏恢复初始状态
+          this.$emit('window-height',{height:'auto'})
           this.isFocused = false
           this.placeholder = ''
       }
@@ -36,7 +41,7 @@ export default {
   .search {
     .content {
         position: absolute;
-        top: 95rpx;
+        top: 94rpx;
         left: 0;
         right: 0;
         bottom: 0;
