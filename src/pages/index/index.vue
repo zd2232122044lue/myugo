@@ -13,17 +13,8 @@
 
 		<!-- 导航菜单 -->
 		<view class="navs">
-			<navigator url="">
-				<image src="/static/uploads/icon_index_nav_1@2x.png" />
-			</navigator>
-			<navigator url="">
-				<image src="/static/uploads/icon_index_nav_2@2x.png" />
-			</navigator>
-			<navigator url="">
-				<image src="/static/uploads/icon_index_nav_3@2x.png" />
-			</navigator>
-			<navigator url="">
-				<image src="/static/uploads/icon_index_nav_4@2x.png" />
+			<navigator url="" v-for="(item,index) in navsData" :key="index">
+				<image :src="item.image_src" />
 			</navigator>
 		</view>
 
@@ -116,7 +107,8 @@ import search from "@/components/search"
 			return {
 				title: 'Hello',
 				pageHeight: 'auto',
-				swiperData: []
+				swiperData: [],
+				navsData: []
 			}
 		},
 		// 注册组件
@@ -126,6 +118,8 @@ import search from "@/components/search"
 		onLoad() {
 			// 获取轮播图数据
 			this.querySwiperData()
+			// 获取导航菜单数据
+			this.queryNavsData()
 		},
 		methods: {
 			// 防止搜索栏遮罩层滚动
@@ -140,7 +134,16 @@ import search from "@/components/search"
 						this.swiperData = res.data.message
 					}
 				})
-			}
+			},
+			// 获取导航菜单数据
+			queryNavsData(){
+				wx.request({
+					url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/catitems',
+					success: (res) => {
+						this.navsData = res.data.message
+					}
+				})
+			},
 		}
 	}
 </script>
