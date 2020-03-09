@@ -33,6 +33,9 @@
 				</view>
 			</view>
 		</view>
+
+		<!-- 回到顶部按钮 -->
+		<view class="goTop icon-top" v-if="scrollTop > 200" @click="goTop"></view>
 	</view>
 </template>
 
@@ -46,7 +49,9 @@ import search from "@/components/search"
 				pageHeight: 'auto',
 				swiperData: [],
 				navsData: [],
-				floorsData: []
+				floorsData: [],
+				// 页面滚动的距离
+				scrollTop: 0
 			}
 		},
 		// 注册组件
@@ -61,11 +66,23 @@ import search from "@/components/search"
 			// 获取楼层商品数据
 			this.queryFloorsData()
 		},
+		// 监听页面的滚动
+		onPageScroll(e){
+			// 获取页面滚动的距离
+			this.scrollTop = e.scrollTop
+		},
 		methods: {
+			// 点击按钮实现回到顶部功能
+			goTop(){
+				// 调用api,将页面滚动到顶部
+				uni.pageScrollTo({scrollTop:0})
+			},
+
 			// 防止搜索栏遮罩层滚动
 			handleWindowHeight(data){
 				this.pageHeight = data.height+'px'
 			},
+
 			// 获取轮播图数据
 			async querySwiperData(){
 				const {message} = await this.$request({
@@ -187,5 +204,19 @@ import search from "@/components/search"
 				}
 			}
 		}
+	}
+	.goTop {
+    position: fixed;
+    bottom: 30rpx;
+    right: 30rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100rpx;
+    height: 100rpx;
+    font-size: 48rpx;
+    color: #666;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
 	}
 </style>
