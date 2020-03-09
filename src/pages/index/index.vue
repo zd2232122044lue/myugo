@@ -20,78 +20,15 @@
 
 		<!-- 楼层商品 -->
 		<view class="floors">
-			<!-- 时尚女装 -->
-			<view class="floor">
+			<view class="floor" v-for="(item,index) in floorsData" :key="index">
 				<!-- 标题 -->
 				<view class="title">
-					<image src="/static/uploads/pic_floor01_title.png" />
+					<image :src="item.floor_title.image_src" />
 				</view>
 				<!-- 列表 -->
 				<view class="items">
-					<navigator url="">
-						<image src="/static/uploads/pic_floor01_1@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor01_2@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor01_3@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor01_4@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor01_5@2x.png" />
-					</navigator>
-				</view>
-			</view>
-			<!-- 户外运动 -->
-			<view class="floor">
-				<!-- 标题 -->
-				<view class="title">
-					<image src="/static/uploads/pic_floor02_title.png" />
-				</view>
-				<!-- 列表 -->
-				<view class="items">
-					<navigator url="">
-						<image src="/static/uploads/pic_floor02_1@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor02_2@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor02_3@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor02_4@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor02_5@2x.png" />
-					</navigator>
-				</view>
-			</view>
-			<!-- 箱包配饰 -->
-			<view class="floor">
-				<!-- 标题 -->
-				<view class="title">
-					<image src="/static/uploads/pic_floor03_title.png" />
-				</view>
-				<!-- 列表 -->
-				<view class="items">
-					<navigator url="">
-						<image src="/static/uploads/pic_floor03_1@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor03_2@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor03_3@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor03_4@2x.png" />
-					</navigator>
-					<navigator url="">
-						<image src="/static/uploads/pic_floor03_5@2x.png" />
+					<navigator url="" v-for="(img,i) in item.product_list" :key="i">
+						<image :src="img.image_src" />
 					</navigator>
 				</view>
 			</view>
@@ -108,7 +45,8 @@ import search from "@/components/search"
 				title: 'Hello',
 				pageHeight: 'auto',
 				swiperData: [],
-				navsData: []
+				navsData: [],
+				floorsData: []
 			}
 		},
 		// 注册组件
@@ -120,6 +58,8 @@ import search from "@/components/search"
 			this.querySwiperData()
 			// 获取导航菜单数据
 			this.queryNavsData()
+			// 获取楼层商品数据
+			this.queryFloorsData()
 		},
 		methods: {
 			// 防止搜索栏遮罩层滚动
@@ -141,6 +81,15 @@ import search from "@/components/search"
 					url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/catitems',
 					success: (res) => {
 						this.navsData = res.data.message
+					}
+				})
+			},
+			// 获取楼层商品数据
+			queryFloorsData(){
+				wx.request({
+					url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/floordata',
+					success: (res) => {
+						this.floorsData = res.data.message
 					}
 				})
 			},
