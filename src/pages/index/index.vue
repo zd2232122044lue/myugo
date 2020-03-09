@@ -68,6 +68,11 @@ import search from "@/components/search"
 			},
 			// 获取轮播图数据
 			querySwiperData(){
+				// // 使用插件方法一
+				// this.request()
+				// 使用插件方法二
+				this.$request()
+
 				wx.request({
 					url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/swiperdata',
 					success: (res) => {
