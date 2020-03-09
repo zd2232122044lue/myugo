@@ -6,14 +6,8 @@
 
 		<!-- 轮播图 -->
 		<swiper indicator-dots>
-			<swiper-item>
-				<image src="/static/uploads/banner1.png">
-			</swiper-item>
-			<swiper-item>
-				<image src="/static/uploads/banner2.png">
-			</swiper-item>
-			<swiper-item>
-				<image src="/static/uploads/banner3.png">
+			<swiper-item v-for="item in swiperData" :key="item.goods_id">
+				<image :src="item.image_src">
 			</swiper-item>
 		</swiper>
 
@@ -121,7 +115,8 @@ import search from "@/components/search"
 		data() {
 			return {
 				title: 'Hello',
-				pageHeight: 'auto'
+				pageHeight: 'auto',
+				swiperData: []
 			}
 		},
 		// 注册组件
@@ -129,11 +124,22 @@ import search from "@/components/search"
 			search
 		},
 		onLoad() {
-
+			// 获取轮播图数据
+			this.querySwiperData()
 		},
 		methods: {
+			// 防止搜索栏遮罩层滚动
 			handleWindowHeight(data){
 				this.pageHeight = data.height+'px'
+			},
+			// 获取轮播图数据
+			querySwiperData(){
+				wx.request({
+					url: 'https://api-ugo-dev.itheima.net/api/public/v1/home/swiperdata',
+					success: (res) => {
+						this.swiperData = res.data.message
+					}
+				})
 			}
 		}
 	}
