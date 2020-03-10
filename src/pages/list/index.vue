@@ -8,7 +8,7 @@
     </view>
     <!-- 商品列表 -->
     <scroll-view class="goods" scroll-y @scrolltolower="reachBottom">
-      <view :key='item.goods_id' v-for='item in goods' class="item">
+      <view :key='item.goods_id' v-for='item in goods' class="item" @click="goDetail(item.goods_id)">
         <!-- 商品图片 -->
         <image class="pic" :src="item.goods_small_logo"></image>
         <!-- 商品信息 -->
@@ -90,6 +90,12 @@
             this.pagenum = this.pagenum+1
             // 页码加一后需要再次调用后台接口
             this.loadData(this.kw)   
+        },
+        // 跳转到商品详情页面
+        goDetail(id){
+            uni.navigateTo({
+                url: '/pages/goods/index?id='+id
+            })
         }
   }
 }
