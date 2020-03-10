@@ -13,7 +13,7 @@
 // vue插件用法二(官方规范)
 export default {
     install: (Vue, options) => {
-        Vue.prototype.$request = async ({ path }) => {
+        Vue.prototype.$request = async ({ path,param }) => {
             // 显示加载提示
             uni.showLoading({
                 title: "正在加载数据..."
@@ -21,7 +21,8 @@ export default {
           // 实现发送请求
           // uni-app对部分小程序原生API进行了封装,可以支持Promise
             const [error, res] = await uni.request({
-              url: options.baseURL+path
+              url: options.baseURL + path,
+              data: param
             })  
             // 隐藏加载提示
             uni.hideLoading()

@@ -32,7 +32,11 @@
         // 商品列表数据
         goods: [],
         // 商品列表总数
-        total: 0
+        total: 0,
+        // 当前查询的页码
+        pagenum: 1,
+        // 每页查询多少条
+        pagesize: 5
       }
     },
     onLoad (param) {
@@ -45,15 +49,33 @@
         // 获取商品列表数据
         async loadData(kw){
             const {message} = await this.$request({
-                path: 'goods/search?query=' + kw 
+                // path: 'goods/search?query=' + kw 
+                path: 'goods/search',
+                param:{
+                    pagenum: this.pagenum,
+                    pagesize: this.pagesize,
+                    query: kw
+                }
             })
-            this.goods = message.goods
+            // 对于分页来说应该做累加操作
+            this.goods = [...this.goods,...message.goods]
             this.total = message.total
         },
         // 监听区域滚动事件
         reachBottom(){
-            console.log("列表区域已经触底");
-            
+            // console.log("列表区域已经触底");
+            // 判断是否还有更多数据
+            if(this.goods.length>=this.total){
+                // 如没有更多数据,给一个提示,终止后续的接口调用
+                uni.showToast({
+                    title: '没有更多数据了'
+                })
+                return
+            }
+            // 加载下一页数据
+            this.pagenum = this.pagenum+1
+            // 页码加一后需要再次调用后台接口
+            this.loadData(this.kw)   
         }
   }
 }
