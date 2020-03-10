@@ -3,7 +3,7 @@
   <view class="search" :class="{focused: isFocused}">
     <!-- 搜索框 -->
     <view class="input-box">
-      <input type="text" @focus="goSearch" :placeholder="placeholder" v-model="keyword" @input="handleQuery" @confirm="goList"/>
+      <input type="text" @focus="goSearch" :placeholder="placeholder" v-model="keyword" @input="handleQuery" @confirm="handleEnter"/>
       <text class="cancel" @click="handleCancel">取消</text>
     </view>
     <!-- 搜索结果 -->
@@ -13,9 +13,7 @@
         <span class="clear"></span>
       </div>
       <div class="history">
-        <navigator url>小米</navigator>
-        <navigator url>大米</navigator>
-        <navigator url>红米</navigator>
+        <navigator url="" v-for="(item,index) in history" :key="index">{{item}}</navigator>
       </div>
       <!-- 结果 -->
       <scroll-view scroll-y class="result" v-if="qlist.length>0">
@@ -31,7 +29,9 @@ export default {
       isFocused: false,
       placeholder: "",
       qlist:[],
-      keyword: ''
+      keyword: '',
+      // 缓存历史关键字: 先查询之前的搜索历史,如果没查到,默认为[]
+      history: uni.getStorageSync('history') || []
     };
   },
   methods: {
@@ -61,9 +61,21 @@ export default {
         path: 'goods/qsearch?query=' + this.keyword
       })
       this.qlist = message
+    },
+    // 监听回车事件
+    handleEnter(e){
+      // 获取输入框最新的值
+      let v = e.detail.value
+      this.history.unshift(v)
+      // 数组的去重操作
+      let arr = [...new Set(this.history)]
+      // 更新状态
+      this.history = arr
+      // 把当前历史关键字进行缓存
+      uni.setStorageSync('history',arr)
     }
   }
-};
+}
 </script>
 
 <style lang="less">
