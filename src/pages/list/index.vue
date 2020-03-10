@@ -7,7 +7,7 @@
       <text>价格</text>
     </view>
     <!-- 商品列表 -->
-    <scroll-view class="goods" scroll-y>
+    <scroll-view class="goods" scroll-y @scrolltolower="reachBottom">
       <view :key='item.goods_id' v-for='item in goods' class="item">
         <!-- 商品图片 -->
         <image class="pic" :src="item.goods_small_logo"></image>
@@ -42,12 +42,18 @@
       this.loadData(param.kw)
     },
     methods: {
+        // 获取商品列表数据
         async loadData(kw){
             const {message} = await this.$request({
                 path: 'goods/search?query=' + kw 
             })
             this.goods = message.goods
             this.total = message.total
+        },
+        // 监听区域滚动事件
+        reachBottom(){
+            console.log("列表区域已经触底");
+            
         }
   }
 }
