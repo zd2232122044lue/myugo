@@ -10,7 +10,7 @@
     <view class="content">
       <div class="title">
         搜索历史
-        <span class="clear"></span>
+        <span class="clear" @click="handleClear"></span>
       </div>
       <div class="history">
         <navigator url="" v-for="(item,index) in history" :key="index">{{item}}</navigator>
@@ -73,6 +73,13 @@ export default {
       this.history = arr
       // 把当前历史关键字进行缓存
       uni.setStorageSync('history',arr)
+    },
+    // 清空搜索历史
+    handleClear(){
+      // 清空缓存
+      uni.removeStorageSync('history')
+      // 清空状态数据
+      this.history = []
     }
   }
 }
