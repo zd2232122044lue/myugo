@@ -13,10 +13,22 @@
 			}
 		},
 		{
-			"path": "pages/shopcar/index"
+			"path": "pages/shopcar/index",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
 		},
 		{
-			"path": "pages/my/index"
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/list/index",
+			"style": {
+				"navigationBarTitleText": "列表"
+			}
 		}
 	],
 	"globalStyle": {

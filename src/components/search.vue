@@ -13,7 +13,7 @@
         <span class="clear" @click="handleClear"></span>
       </div>
       <div class="history">
-        <navigator url="" v-for="(item,index) in history" :key="index">{{item}}</navigator>
+        <navigator :url="'/pages/list/index?kw=' + item" v-for="(item,index) in history" :key="index">{{item}}</navigator>
       </div>
       <!-- 结果 -->
       <scroll-view scroll-y class="result" v-if="qlist.length>0">
@@ -77,6 +77,10 @@ export default {
       this.history = arr
       // 把当前历史关键字进行缓存
       uni.setStorageSync('history',arr)
+      // 回车后跳转到列表页面
+      uni.navigateTo({
+        url: '/pages/list/index?kw=' + v
+      })
     },
     // 清空搜索历史
     handleClear(){
