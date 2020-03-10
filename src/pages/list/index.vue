@@ -36,7 +36,9 @@
         // 当前查询的页码
         pagenum: 1,
         // 每页查询多少条
-        pagesize: 5
+        pagesize: 5,
+        // 接口调用状态位  防止频繁加载方法二
+        loaded: false
       }
     },
     onLoad (param) {
@@ -48,6 +50,16 @@
     methods: {
         // 获取商品列表数据
         async loadData(kw){
+            // 默认状态位false，第一次请求修改为true，
+            //  并且true状态不允许再次发送请求，只有接口返回数据后，
+            //  才把状态为修改回false，从而允许再次发送请求。
+            if(this.loaded){
+                // 如果接口尚未返回数据,就阻止后续的请求
+                return
+            }
+            // 表示接口正在发送请求,但是尚未返回结果
+            this.loaded = true
+
             const {message} = await this.$request({
                 // path: 'goods/search?query=' + kw 
                 path: 'goods/search',
@@ -60,6 +72,8 @@
             // 对于分页来说应该做累加操作
             this.goods = [...this.goods,...message.goods]
             this.total = message.total
+            // 接口返回数据后,允许再次发送请求
+            this.loaded = false
         },
         // 监听区域滚动事件
         reachBottom(){

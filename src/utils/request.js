@@ -16,7 +16,10 @@ export default {
         Vue.prototype.$request = async ({ path,param }) => {
             // 显示加载提示
             uni.showLoading({
-                title: "正在加载数据..."
+              title: "正在加载数据..."
+            // mask: true
+              // 防止频繁加载方案一,接口调用前显示提示框并且显示蒙层，可以防止触摸穿透，
+              // 只有上一次数据返回后才隐藏提示框，那么才可以发送下次请求
             })
           // 实现发送请求
           // uni-app对部分小程序原生API进行了封装,可以支持Promise
