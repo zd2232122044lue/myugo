@@ -18,7 +18,7 @@
         <navigator url>红米</navigator>
       </div>
       <!-- 结果 -->
-      <scroll-view scroll-y class="result">
+      <scroll-view scroll-y class="result" v-if="qlist.length>0">
         <navigator url='' v-for="item in qlist" :key="item.goods_id">{{item.goods_name}}</navigator>
       </scroll-view>
     </view>
@@ -30,7 +30,8 @@ export default {
     return {
       isFocused: false,
       placeholder: "",
-      qlist:[]
+      qlist:[],
+      keyword: ''
     };
   },
   methods: {
@@ -47,7 +48,12 @@ export default {
       // 点击取消按钮,搜索栏恢复初始状态
       this.$emit("window-height", { height: "auto" });
       this.isFocused = false;
+      // 清除提示信息
       this.placeholder = "";
+      // 清空输入的关键字
+      this.keyword = '';
+      // 清空根据关键字查询的搜索结果
+      this.qlist = [];
     },
     // 根据用户输入关键字查询相应结果
     async handleQuery(){
