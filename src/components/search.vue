@@ -56,11 +56,15 @@ export default {
       this.qlist = [];
     },
     // 根据用户输入关键字查询相应结果
-    async handleQuery(){
-      const {message} = await this.$request({
-        path: 'goods/qsearch?query=' + this.keyword
-      })
-      this.qlist = message
+    handleQuery(){
+      // 通过函数防抖的方式限制接口调用的频率
+      clearTimeout(this.timer)
+      this.timer = setTimeout(async ()=>{
+          const {message} = await this.$request({
+          path: 'goods/qsearch?query=' + this.keyword
+        })
+        this.qlist = message
+      },1000) 
     },
     // 监听回车事件
     handleEnter(e){
