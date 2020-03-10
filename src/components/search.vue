@@ -3,7 +3,7 @@
   <view class="search" :class="{focused: isFocused}">
     <!-- 搜索框 -->
     <view class="input-box">
-      <input type="text" @focus="goSearch" :placeholder="placeholder" />
+      <input type="text" @focus="goSearch" :placeholder="placeholder" v-model="keyword" @input="handleQuery" @confirm="goList"/>
       <text class="cancel" @click="handleCancel">取消</text>
     </view>
     <!-- 搜索结果 -->
@@ -18,9 +18,9 @@
         <navigator url>红米</navigator>
       </div>
       <!-- 结果 -->
-      <!-- <scroll-view scroll-y class="result">
-        <navigator url>冰箱</navigator>
-      </scroll-view>-->
+      <scroll-view scroll-y class="result">
+        <navigator url='' v-for="item in qlist" :key="item.goods_id">{{item.goods_name}}</navigator>
+      </scroll-view>
     </view>
   </view>
 </template>
@@ -29,7 +29,8 @@ export default {
   data() {
     return {
       isFocused: false,
-      placeholder: ""
+      placeholder: "",
+      qlist:[]
     };
   },
   methods: {
@@ -47,6 +48,13 @@ export default {
       this.$emit("window-height", { height: "auto" });
       this.isFocused = false;
       this.placeholder = "";
+    },
+    // 根据用户输入关键字查询相应结果
+    async handleQuery(){
+      const {message} = await this.$request({
+        path: 'goods/qsearch?query=' + this.keyword
+      })
+      this.qlist = message
     }
   }
 };
@@ -90,7 +98,25 @@ export default {
         color: #333;
       }
     }
+    .result {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #fff;
+    navigator {
+      line-height: 1;
+      padding: 20rpx 30rpx;
+      font-size: 24rpx;
+      color: #666;
+      border-bottom: 1px solid #eee;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
   }
+}
   .input-box {
     background-color: #ff2d4a;
     padding: 20rpx 16rpx;
