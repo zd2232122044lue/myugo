@@ -2,16 +2,16 @@
   <view class="wrapper">
     <!-- 收货信息 -->
     <view class="shipment">
-      <template>
+      <template v-if="address">
         <view class="dt">收货人: </view>
         <view class="dd meta">
-          <text class="name"></text>
-          <text class="phone"></text>
+          <text class="name">{{address.userName}}</text>
+          <text class="phone">{{address.telNumber}}</text>
         </view>
         <view class="dt">收货地址:</view>
-        <view class="dd"></view>
+        <view class="dd">{{addressDetail}}</view>
       </template>
-      <button>获取收货地址</button>
+      <button @click='getAddress' v-else>获取收货地址</button>
     </view>
     <!-- 购物车 -->
     <view class="carts">
@@ -62,18 +62,23 @@
     data () {
       return {
         // 购物车数据
-        shopcar: []
+        shopcar: [],
+        // 收货地址
+        address: null
       }
     },
     computed:{
+
       // 过滤出所有选中的商品
       checkedProducts(){
         return this.shopcar.filter(item=>item.goods_check)
       },
+
       // 解决uni-app中三目运算符条件不支持判断的bug
       isAll(){
         return this.checkedProducts.length === this.shopcar.length
       },
+
       // 计算所有的选中的商品的总价
       // -- 单价*数量 并进行累加
       countTotal(){
@@ -84,6 +89,11 @@
           }
         })
         return total
+      },
+
+      // 收获地址处理
+      addressDetail(){
+        return this.address && this.address.provinceName + this.address.cityName + this.address.countyName + this.address.detailInfo
       }
     },
     // 初始化购物车数据
@@ -123,6 +133,16 @@
         })
         // 把全选的状态同步到缓存
         uni.setStorageSync('myshopcar',this.shopcar)
+      },
+
+      // 获取收获地址
+      getAddress(){
+        uni.chooseAddress({
+          success: (res) => {
+            this.address = res
+          }  
+        })
+        
       }
   }
 }
