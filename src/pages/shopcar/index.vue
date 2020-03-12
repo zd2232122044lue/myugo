@@ -18,7 +18,7 @@
       <view class="item">
         <!-- 店铺名称 -->
         <view class="shopname">优购生活馆</view>
-        <view class="goods" v-for="item in shopcar" :key="item.goods_id">
+        <view class="goods" v-for="(item,index) in shopcar" :key="item.goods_id">
           <!-- 商品图片 -->
           <image class="pic" :src="item.goods_img"></image>
           <!-- 商品信息 -->
@@ -29,9 +29,9 @@
             </view>
             <!-- 加减 -->
             <view class="amount">
-              <text class="reduce">-</text>
-              <input type="number" class="number">
-              <text class="plus">+</text>
+              <text class="reduce" @click="changeNum(index,-1)">-</text>
+              <input type="number" class="number" :value="item.goods_num">
+              <text class="plus" @click="changeNum(index,1)">+</text>
             </view>
           </view>
           <!-- 选框 -->
@@ -70,6 +70,20 @@
       this.shopcar = uni.getStorageSync('myshopcar') || []
     },
     methods: {
+      // 修改购物车商品的数量
+      changeNum(index,n){
+        // 商品数量最少为1
+        if(n===-1&&this.shopcar[index].goods_num<=1){
+          return
+        }
+        // 商品数量不能超过库存
+        if(n===1&&this.shopcar[index].goods_num>5){
+          return
+        }
+        this.shopcar[index].goods_num += n
+        // 把修改后的数据重新同步到缓存
+        uni.setStorageSync('myshopcar',this.shopcar)
+      }
   }
 }
 </script>
