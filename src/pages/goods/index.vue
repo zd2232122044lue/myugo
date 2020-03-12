@@ -22,7 +22,7 @@
     <!-- 操作 -->
     <view class="action">
       <button open-type="getPhoneNumber" class="icon-handset">联系客服</button>
-      <text class="cart icon-cart" @click="goCart">购物车</text>
+      <text class="cart icon-cart" @click="goShopcar">购物车</text>
       <text class="add" @click='addShopcar'>加入购物车</text>
       <text class="buy" @click="createOrder">立即购买</text>
     </view>
@@ -100,6 +100,20 @@
         // 加入成功提示
         uni.showToast({
           title: '加入购物车成功'
+        })
+      },
+      // 跳转到购物车页面
+      goShopcar(){
+        uni.switchTab({
+          url: '/pages/shopcar/index'
+        })
+      },
+      // 立即购买
+      createOrder(){
+        // 先加入购物车,然后跳转到购物车页面
+        this.addShopcar()
+        uni.switchTab({
+           url: '/pages/shopcar/index'
         })
       }
     }
