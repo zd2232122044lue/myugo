@@ -52,7 +52,7 @@
       <view class="total">
         合计: <text>￥</text><label>{{countTotal}}</label><text>.00</text>
       </view>
-      <view class="pay">结算({{checkedProducts.length}})</view>
+      <view class="pay" @click="createOrder">结算({{checkedProducts.length}})</view>
     </view>
   </view>
 </template>
@@ -142,7 +142,34 @@
             this.address = res
           }  
         })
-        
+      },
+
+      // 创建订单
+      createOrder(){
+        // 1.判断是否选择了商品
+        if(this.checkedProducts.length === 0){
+          // 没有选择商品,给与提示,终止后续代码执行
+          uni.showToast({
+            title: '请选择商品'
+          })
+          return
+        }
+        // 2.判断是否选中了收获地址
+        if(this.address === null){
+          // 没有选中地址,给予提示,终止后续代码执行
+           uni.showToast({
+            title: '请选择地址'
+          })
+          return
+        }
+        // 3.判断是否已经登录
+        const token = uni.getStorageSync('mytoken')
+        if(!token){
+          // 没有登录,跳转到登录页面,进行登录
+          uni.navigateTo({
+            url: '/pages/auth/index'
+          })
+        }
       }
   }
 }
