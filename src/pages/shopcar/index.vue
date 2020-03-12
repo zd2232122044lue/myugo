@@ -44,8 +44,9 @@
     <!-- 其它 -->
     <view class="extra">
       <label class="checkall">
-        
-        <icon type="success" size="20"></icon>
+        <!-- 三目运算符的条件不支持判断(uni-app存在的bug) -->
+        <!-- <icon type="success" size="20" :color="this.checkedProducts.length === this.shopcar.length?'#EA4451':'#ccc'"></icon> -->
+        <icon type="success" size="20" @click="toggleAll" :color="isAll?'#EA4451':'#ccc'"></icon>
         全选
       </label>
       <view class="total">
@@ -62,6 +63,16 @@
       return {
         // 购物车数据
         shopcar: []
+      }
+    },
+    computed:{
+      // 过滤出所有选中的商品
+      checkedProducts(){
+        return this.shopcar.filter(item=>item.goods_check)
+      },
+      // 解决uni-app中三目运算符条件不支持判断的bug
+      isAll(){
+        return this.checkedProducts.length === this.shopcar.length
       }
     },
     // 初始化购物车数据
@@ -89,6 +100,17 @@
       toggleItem(index){
         this.shopcar[index].goods_check = !this.shopcar[index].goods_check
         // 把状态同步到缓存
+        uni.setStorageSync('myshopcar',this.shopcar)
+      },
+
+      // 控制所有商品的选中状态
+      toggleAll(){
+        let flag = !this.isAll
+        this.shopcar.forEach(item=>{
+          // 把所有的商品状态修改为全选按钮相反的状态
+          item.goods_check = flag
+        })
+        // 把全选的状态同步到缓存
         uni.setStorageSync('myshopcar',this.shopcar)
       }
   }
