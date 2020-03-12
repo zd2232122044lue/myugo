@@ -36,7 +36,7 @@
           </view>
           <!-- 选框 -->
           <view class="checkbox">
-            <icon type="success" size="20"></icon>
+            <icon type="success" size="20" @click="toggleItem(index)" :color="item.goods_check?'#EA4451':'#ccc'"></icon>
           </view>
         </view>
       </view>
@@ -44,7 +44,7 @@
     <!-- 其它 -->
     <view class="extra">
       <label class="checkall">
-        <!-- 这里三目运算符的条件不支持判断（uni-app存在的bug） -->
+        
         <icon type="success" size="20"></icon>
         全选
       </label>
@@ -82,6 +82,13 @@
         }
         this.shopcar[index].goods_num += n
         // 把修改后的数据重新同步到缓存
+        uni.setStorageSync('myshopcar',this.shopcar)
+      },
+
+      // 控制单个商品的选中状态
+      toggleItem(index){
+        this.shopcar[index].goods_check = !this.shopcar[index].goods_check
+        // 把状态同步到缓存
         uni.setStorageSync('myshopcar',this.shopcar)
       }
   }
