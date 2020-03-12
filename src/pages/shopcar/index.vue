@@ -50,9 +50,9 @@
         全选
       </label>
       <view class="total">
-        合计: <text>￥</text><label></label><text>.00</text>
+        合计: <text>￥</text><label>{{countTotal}}</label><text>.00</text>
       </view>
-      <view class="pay">结算()</view>
+      <view class="pay">结算({{checkedProducts.length}})</view>
     </view>
   </view>
 </template>
@@ -73,6 +73,17 @@
       // 解决uni-app中三目运算符条件不支持判断的bug
       isAll(){
         return this.checkedProducts.length === this.shopcar.length
+      },
+      // 计算所有的选中的商品的总价
+      // -- 单价*数量 并进行累加
+      countTotal(){
+          let total = 0
+          this.checkedProducts.forEach(item=>{
+          if(item.goods_check){
+            total += item.goods_price * item.goods_num
+          }
+        })
+        return total
       }
     },
     // 初始化购物车数据
