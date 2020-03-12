@@ -7,7 +7,10 @@
 		<!-- 轮播图 -->
 		<swiper indicator-dots>
 			<swiper-item v-for="item in swiperData" :key="item.goods_id">
-				<image :src="item.image_src">
+				<!-- 跳转到商品详情页面 -->
+				<navigator :url='item.navigator_url'>
+					<image :src='item.image_src'/>
+				</navigator>
 			</swiper-item>
 		</swiper>
 
@@ -85,8 +88,13 @@ import search from "@/components/search"
 
 			// 获取轮播图数据
 			async querySwiperData(){
-				const {message} = await this.$request({
+				let {message} = await this.$request({
 					path: 'home/swiperdata'
+				})
+				// 加工处理跳转路径
+				message = message.map(item=>{
+					item.navigator_url = item.navigator_url.replace('goods_detail/main?goods_id', 'goods/index?id')
+					return item 
 				})
 				this.swiperData = message
 

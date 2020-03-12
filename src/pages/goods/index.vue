@@ -15,6 +15,7 @@
     </view>
     <!-- 商品详情 -->
     <view class="detail">
+      <!-- 富文本 -->
       <view :style='{fontSize: 0}' v-html="goods.goods_introduce"></view>
       <!-- <rich-text :style='{fontSize: 0}' :nodes='goods.goods_introduce'></rich-text> -->
     </view>
