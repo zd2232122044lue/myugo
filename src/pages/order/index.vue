@@ -29,7 +29,9 @@
         <!-- 其它 -->
         <view class="extra">
           订单号: {{item.order_number}}
-          <button size="mini" type="primary">支付</button>
+          <button :data-id='item.order_number' @click="handlePay" size="mini" type="primary">支付</button>
+          <!-- 如下代码结构在uni-app环境下不好使 -->
+          <!-- <button @click='handlePay(item.order_number)' size="mini" type="primary">支付</button> -->
         </view> 
       </view>
        
@@ -61,6 +63,30 @@
                   }
               })
               this.list = message.orders
+          },
+
+          // 实现支付操作
+          async handlePay(e){
+            // 1.调用接口请求实现付款
+            const {message} = await this.$request({
+              path: "my/orders/req_unifiedorder",
+              method: 'post',
+              param: {
+                order_number: e.target.dataset.id
+              },
+              header: {
+                Authorization: uni.getStorageSync('mytoken')
+              }
+            })
+            // 2.用户确认进行付款
+            uni.requestPayment({
+              ...message.pay,
+              success: () => {
+                uni.showToast({
+                  title: '支付成功!'
+                })
+              }
+            })
           }
       }
     
