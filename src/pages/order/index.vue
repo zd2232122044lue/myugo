@@ -9,96 +9,60 @@
     </view>
     <!-- 订单 -->
     <scroll-view class="orders" scroll-y>
-      <view class="item">
-        <!-- 商品图片 -->
-        <image class="pic" src="http://static.botue.com/ugo/uploads/goods_1.jpg"></image>
-        <!-- 商品信息 -->
-        <view class="meta">
-          <view class="name">【海外购自营】黎珐(ReFa) MTG日本 CARAT铂金微电流瘦脸瘦身提拉紧致V脸美容仪 【保税仓发货】</view>
-          <view class="price">
-            <text>￥</text>1399<text>.00</text>
-          </view>
-          <view class="num">x1</view>
-        </view>
+      <view class="item" v-for="item in list" :key="item.goods_id">
+          <block v-for='p in item.goods' :key="p.goods_id">
+            <!-- 商品图片 -->
+            <image class="pic" :src="p.goods_small_logo"></image>
+            <!-- 商品信息 -->
+            <view class="meta">
+              <view class="name">{{p.goods_name}}</view>
+              <view class="price">
+                <text>￥</text>{{p.goods_price}}<text>.00</text>
+              </view>
+              <view class="num">x{{p.goods_number}}</view>
+            </view>
+         </block>
         <!-- 总价 -->
         <view class="amount">
-          共1件商品 总计: ￥4099(含运费0.00)
+          共{{item.total_count}}件商品 总计: ￥{{item.total_price}}(含运费0.00)
         </view>
         <!-- 其它 -->
         <view class="extra">
-          订单号: GD20180511000000000178
+          订单号: {{item.order_number}}
           <button size="mini" type="primary">支付</button>
-        </view>
+        </view> 
       </view>
-      <view class="item">
-        <!-- 商品图片 -->
-        <image class="pic" src="http://static.botue.com/ugo/uploads/goods_1.jpg"></image>
-        <!-- 商品信息 -->
-        <view class="meta">
-          <view class="name">【海外购自营】黎珐(ReFa) MTG日本 CARAT铂金微电流瘦脸瘦身提拉紧致V脸美容仪 【保税仓发货】</view>
-          <view class="price">
-            <text>￥</text>1399<text>.00</text>
-          </view>
-          <view class="num">x1</view>
-        </view>
-        <!-- 总价 -->
-        <view class="amount">
-          共1件商品 总计: ￥4099(含运费0.00)
-        </view>
-        <!-- 其它 -->
-        <view class="extra">
-          订单号: GD20180511000000000178
-          <button size="mini" type="primary">支付</button>
-        </view>
-      </view>
-      <view class="item">
-        <!-- 商品图片 -->
-        <image class="pic" src="http://static.botue.com/ugo/uploads/goods_1.jpg"></image>
-        <!-- 商品信息 -->
-        <view class="meta">
-          <view class="name">【海外购自营】黎珐(ReFa) MTG日本 CARAT铂金微电流瘦脸瘦身提拉紧致V脸美容仪 【保税仓发货】</view>
-          <view class="price">
-            <text>￥</text>1399<text>.00</text>
-          </view>
-          <view class="num">x1</view>
-        </view>
-        <!-- 总价 -->
-        <view class="amount">
-          共1件商品 总计: ￥4099(含运费0.00)
-        </view>
-        <!-- 其它 -->
-        <view class="extra">
-          订单号: GD20180511000000000178
-          <button size="mini" type="primary">支付</button>
-        </view>
-      </view>
-      <view class="item">
-        <!-- 商品图片 -->
-        <image class="pic" src="http://static.botue.com/ugo/uploads/goods_1.jpg"></image>
-        <!-- 商品信息 -->
-        <view class="meta">
-          <view class="name">【海外购自营】黎珐(ReFa) MTG日本 CARAT铂金微电流瘦脸瘦身提拉紧致V脸美容仪 【保税仓发货】</view>
-          <view class="price">
-            <text>￥</text>1399<text>.00</text>
-          </view>
-          <view class="num">x1</view>
-        </view>
-        <!-- 总价 -->
-        <view class="amount">
-          共1件商品 总计: ￥4099(含运费0.00)
-        </view>
-        <!-- 其它 -->
-        <view class="extra">
-          订单号: GD20180511000000000178
-          <button size="mini" type="primary">支付</button>
-        </view>
-      </view>
+       
     </scroll-view>
   </view>
 </template>
 
 <script>
   export default {
+      data(){
+          return {
+              // 所有订单
+              list: []
+          }
+      },
+      onLoad(){
+          this.allOrders()
+      },
+      methods:{
+          // 获取所有订单数据
+          async allOrders(){
+              const {message} = await this.$request({
+                  path: 'my/orders/all',
+                  param: {
+                      type: 1
+                  },
+                  header: {
+                    Authorization: uni.getStorageSync('mytoken')
+                  }
+              })
+              this.list = message.orders
+          }
+      }
     
   }
 </script>

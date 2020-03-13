@@ -7,7 +7,7 @@
 <script>
   export default {
       methods:{
-          getUserInfo(e){
+          async getUserInfo(e){
               // 1.获取微信的授权信息
               const {
                 encryptedData,
@@ -27,6 +27,7 @@
 
               // 3.调用后台接口获取token信息
               const {message} = await this.$request({
+                method: 'post',
                 path: 'users/wxlogin',
                 param: {
                   encryptedData,
