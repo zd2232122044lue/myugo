@@ -84,9 +84,7 @@
       countTotal(){
           let total = 0
           this.checkedProducts.forEach(item=>{
-          if(item.goods_check){
             total += item.goods_price * item.goods_num
-          }
         })
         return total
       },
@@ -170,6 +168,7 @@
             url: '/pages/auth/index'
           })
         }
+        
       }
   }
 }
