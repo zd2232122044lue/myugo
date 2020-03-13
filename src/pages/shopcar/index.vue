@@ -193,6 +193,9 @@
           })
           // 获取订单号,跳转到订单确认页面
           const {order_number} = message
+          uni.navigateTo({
+            url: '/pages/order/index?order_number=' + order_number
+          })
       }
   }
 }
