@@ -13,7 +13,7 @@
 // vue插件用法二(官方规范)
 export default {
   install: (Vue, options) => {
-    Vue.prototype.$request = async ({ path, param, method = 'get' }) => {
+    Vue.prototype.$request = async ({ path, param, method = 'get',header }) => {
       // 显示加载提示
       uni.showLoading({
         title: "正在加载数据..."
@@ -29,7 +29,9 @@ export default {
         // 请求参数
         data: param,
         // 请求方式
-        method: method
+        method: method,
+        // 请求头
+        header: header
       })
       // 隐藏加载提示
       uni.hideLoading()

@@ -143,7 +143,7 @@
       },
 
       // 创建订单
-      createOrder(){
+      async createOrder(){
         // 1.判断是否选择了商品
         if(this.checkedProducts.length === 0){
           // 没有选择商品,给与提示,终止后续代码执行
@@ -168,7 +168,31 @@
             url: '/pages/auth/index'
           })
         }
-        
+        // 4.登录成功后返回继续创建订单
+          // 准备创建订单的参数
+          let list = this.checkedProducts.map(item=>{
+            return {
+              goods_id: item.goods_id,
+              goods_number: item.goods_num,
+              goods_price: item.goods_price
+            }
+          })
+          const orderParam = {
+            order_price: this.countTotal,
+            consignee_addr: this.addressDetail,
+            goods: list
+          }
+          // 调用接口
+          const {message} = await this.$request({
+            method: 'post',
+            path: 'my/orders/create',
+            param: orderParam,
+            header: {
+              Authorization: token
+            }
+          })
+          // 获取订单号,跳转到订单确认页面
+          const {order_number} = message
       }
   }
 }
